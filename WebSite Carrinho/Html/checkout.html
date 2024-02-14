@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/Css/style.css" />
+
+    <link rel="stylesheet" href="/Css/checkout.css" />
+  </head>
+  <body>
+    <header>
+      <a href="/Index.html" class="logo">Twplate</a>
+
+      <nav class="navbar">
+        <a style="--i: 0" href="/Index.html">Inicio</a>
+        <a style="--i: 3" href="/Index.html#project">Produtos</a>
+        <a style="--i: 6" href="#contact">Contato</a>
+      </nav>
+      <div class="iconCart"></div>
+    </header>
+    <div class="container">
+      <div class="checkoutLayout">
+        <div class="returnCart">
+          <h1>Lista de Produtos</h1>
+          <div class="list">
+            <div class="item">
+              <img src="images/1.webp" />
+              <div class="info">
+                <div class="name">PRODUCT 1</div>
+                <div class="price">$22/1 product</div>
+              </div>
+              <div class="quantity">5</div>
+              <div class="returnPrice">$433.3</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="right">
+          <h1>Confirmação do Pedido</h1>
+          <div class="form">
+            <div class="group">
+              <label for="name">Nome Completo</label>
+              <input type="text" name="name" id="name" />
+            </div>
+
+            <div class="group">
+              <label for="phone">Telefone</label>
+              <input type="text" name="phone" id="phone" />
+            </div>
+
+            <div class="group">
+              <label for="address">E-mail </label>
+              <input type="text" name="address" id="address" />
+            </div>
+
+            <div class="group">
+              <label for="country">Forma de Contato</label>
+              <select name="country" id="contactMethod">
+                <option value="">Selecionar..</option>
+                <option value="">Whatsapp</option>
+                <option value="">E-mail</option>
+              </select>
+            </div>
+
+            <div class="group">
+              <label for="city">Pagamento</label>
+              <select name="city" id="paymentMethod">
+                <option value="">Selecionar..</option>
+                <option value="">Pix</option>
+              </select>
+            </div>
+          </div>
+          <div class="return">
+            <div class="row">
+              <div>Total Quantity</div>
+              <div class="totalQuantity">70</div>
+            </div>
+            <div class="row">
+              <div>Total Price</div>
+              <div class="totalPrice">$900</div>
+            </div>
+          </div>
+          <button class="buttonCheckout" onclick="enviarEmail()">FINALIZAR PEDIDO
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="footer" id="contact">
+
+        <div class="box-container">
+    
+            <div class="box">
+                <h3>Sobre</h3>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt veniam eum in libero delectus sit reprehenderit velit similique! Ad, ea!.</p>
+            </div>
+    
+            <div class="box">
+                <h3>Acesso Rapido</h3>
+                <a href="#">Inicio</a>
+                <a href="#">Recursos</a>
+                <a href="#">Produtos</a>
+                <a href="#">Contato</a>
+            </div>
+    
+            <div class="box">
+                <h3>Contatos</h3>
+                <a href="#">(11)95555-4444</a>
+                <a href="#"></a>
+                <a href="#"></a>
+            </div>
+    
+            <div class="box">
+                <h3>Midias</h3>
+                <a href="#">facebook</a>
+                <a href="#">twitter</a>
+                <a href="#">instagram</a>
+                <a href="#">linkedin</a>
+            </div>
+    
+        </div>
+    
+    
+        <p class="credit" href="https://www.cauaqroz.com.br" target="_blank"><a href="https://www.cauaqroz.com.br" target="_blank">  </a>© Copyright By C_Qroz</p>
+    </div>
+
+
+
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"
+    ></script>
+    <script type="text/javascript">
+    (function () {
+        emailjs.init("kh5nucPMicXqUn6aD");
+      })();
+      
+    function enviarEmail() {
+    // Obter os dados do formulário
+    const name = document.getElementById("name").value;
+    const phone = document.getElementById("phone").value;
+    const address = document.getElementById("address").value;
+    const contactMethod =
+      document.getElementById("contactMethod").options[
+        document.getElementById("contactMethod").selectedIndex
+      ].text;
+    const paymentMethod =
+      document.getElementById("paymentMethod").options[
+        document.getElementById("paymentMethod").selectedIndex
+      ].text;
+
+
+      // Verificar se todos os campos estão preenchidos
+    if (!name || !phone || !address || !contactMethod || !paymentMethod) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro',
+            html: '<p style="font-size: 20px;">Por favor, preencha todas as informações do formulário.</p>',
+        });
+        return;
+    }
+    // Obter o valor total
+    const totalPrice = document.querySelector(".totalPrice").textContent;
+    const totalQuantity = document.querySelector(".totalQuantity").textContent;
+
+    console.log(`Nome: ${name}`);
+    console.log(`Telefone: ${phone}`);
+    console.log(`E-mail: ${address}`);
+    console.log(`Forma de Contato: ${contactMethod}`);
+    console.log(`Pagamento: ${paymentMethod}`);
+    console.log(`Total Price: ${totalPrice}`);
+    console.log(`Total Quantity: ${totalQuantity}`);
+
+    let carrinho;
+    try {
+      carrinho = JSON.parse(
+        document.cookie.replace(
+          /(?:(?:^|.*;\s*)listCart\s*\=\s*([^;]*).*$)|^.*$/,
+          "$1"
+        )
+      );
+    } catch (e) {
+      console.error("Erro ao analisar o carrinho:", e);
+    }
+    if (!carrinho) {
+      console.error("Carrinho não encontrado ou vazio");
+      return;
+    }
+    let carrinhoFormatado = "";
+    for (let i = 0; i < carrinho.length; i++) {
+      const item = carrinho[i];
+      if (item) {
+        carrinhoFormatado += `ID: ${item.id}, Nome: ${item.name}, Preço: ${item.price}, Quantidade: ${item.quantity}\n`;
+      }
+    }
+    console.log(`Carrinho: ${JSON.stringify(carrinho)}`);
+   
+    Swal.fire({
+  title: 'Enviando...',
+  allowOutsideClick: false,
+  onBeforeOpen: () => {
+    Swal.showLoading()
+  },
+});
+    emailjs
+      .send("service_hbgp846", "template_4az2bev", {
+        to_email: "cauaqroz@gmail.com", //email do proprietario do site
+        subject: "Pedido de Compra",
+        name_param: name,
+        phone_param: phone,
+        email_param: address,
+        contactMethod_param: contactMethod,
+        paymentMethod_param: paymentMethod,
+        cart_param: carrinhoFormatado,
+        totalPrice_param: totalPrice, // Adicione esta linha
+        totalQuantity_param: totalQuantity, // Adicione esta linha
+      })
+      .then(
+        function (response) {
+          Swal.fire({
+        icon: 'success',
+        title: 'Sucesso',
+        html: '<p style="font-size: 20px;">Formulário enviado com sucesso!</p>'
+      });
+        },
+        function (error) {
+          Swal.fire({
+        icon: 'error',
+        title: 'Erro',
+        html: '<p style="font-size: 20px;">Ocorreu um erro ao enviar o formulário.</p>',
+      });
+        }
+      );
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/Js/checkout.js"></script>
+  </body>
+</html>
